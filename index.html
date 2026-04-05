@@ -3,78 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zen Habits | Daily Tracker</title>
+    <title>Daily Habits | Natural Tracker</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="container">
+    <div class="habit-container">
         <header>
-            <h1>Zen Habits</h1>
-            <p>Stay consistent. Stay focused.</p>
+            <h1>Daily Habits</h1>
+            <p>One step at a time.</p>
             
-            <!-- FEATURE 1: Working Progress Bar -->
-            <div class="progress-container">
-                <div class="progress-bar" id="progressBar"></div>
+            <div class="progress-wrapper">
+                <div class="progress-fill" id="progressFill"></div>
             </div>
-            <p class="status-text">Daily Progress: <span id="percent">0%</span></p>
+            <div class="percentage-label"><span id="percentNum">0</span>% Complete</div>
         </header>
 
-        <main class="habit-list">
-            <!-- Habit 1 -->
-            <div class="habit-item">
-                <input type="checkbox" class="habit-check" onclick="updateProgress()">
-                <label>Code for 1 Hour</label>
-            </div>
+        <div class="habit-list">
+            <label class="habit-item">
+                <input type="checkbox" class="habit-checkbox">
+                <span class="custom-check"></span>
+                <span class="habit-text">Ship a GitHub Commit</span>
+            </label>
 
-            <!-- Habit 2 -->
-            <div class="habit-item">
-                <input type="checkbox" class="habit-check" onclick="updateProgress()">
-                <label>Read 20 Pages</label>
-            </div>
+            <label class="habit-item">
+                <input type="checkbox" class="habit-checkbox">
+                <span class="custom-check"></span>
+                <span class="habit-text">Deep Work Session (1hr)</span>
+            </label>
 
-            <!-- Habit 3 -->
-            <div class="habit-item">
-                <input type="checkbox" class="habit-check" onclick="updateProgress()">
-                <label>Drink 2L Water</label>
-            </div>
+            <label class="habit-item">
+                <input type="checkbox" class="habit-checkbox">
+                <span class="custom-check"></span>
+                <span class="habit-text">Read Tech Documentation</span>
+            </label>
 
-            <!-- Habit 4 -->
-            <div class="habit-item">
-                <input type="checkbox" class="habit-check" onclick="updateProgress()">
-                <label>Daily Workout</label>
-            </div>
+            <label class="habit-item">
+                <input type="checkbox" class="habit-checkbox">
+                <span class="custom-check"></span>
+                <span class="habit-text">Drink 2L of Water</span>
+            </label>
 
-            <!-- Habit 5 -->
-            <div class="habit-item">
-                <input type="checkbox" class="habit-check" onclick="updateProgress()">
-                <label>Meditate / No Screen Time</label>
-            </div>
-        </main>
+            <label class="habit-item">
+                <input type="checkbox" class="habit-checkbox">
+                <span class="custom-check"></span>
+                <span class="habit-text">Offline / Meditation</span>
+            </label>
+        </div>
 
-        <!-- FEATURE 2: Reset Button -->
-        <button class="reset-btn" onclick="resetHabits()">Reset for Tomorrow</button>
+        <button class="clear-btn" id="resetBtn">Reset List</button>
     </div>
 
-    <footer>
-        <p>Built with intention • 2024</p>
-    </footer>
-
     <script>
+        const checkboxes = document.querySelectorAll('.habit-checkbox');
+        const progressFill = document.getElementById('progressFill');
+        const percentNum = document.getElementById('percentNum');
+        const resetBtn = document.getElementById('resetBtn');
+
         function updateProgress() {
-            let checkboxes = document.querySelectorAll('.habit-check');
-            let checked = document.querySelectorAll('.habit-check:checked');
-            let percentage = (checked.length / checkboxes.length) * 100;
+            const total = checkboxes.length;
+            const checked = document.querySelectorAll('.habit-checkbox:checked').length;
+            const percentage = Math.round((checked / total) * 100);
             
-            document.getElementById('progressBar').style.width = percentage + "%";
-            document.getElementById('percent').innerText = Math.round(percentage) + "%";
+            progressFill.style.width = percentage + "%";
+            percentNum.innerText = percentage;
         }
 
-        function resetHabits() {
-            let checkboxes = document.querySelectorAll('.habit-check');
-            checkboxes.forEach(cb => cb.checked = false);
+        // Add event listeners to all checkboxes
+        checkboxes.forEach(box => {
+            box.addEventListener('change', updateProgress);
+        });
+
+        // Reset functionality
+        resetBtn.addEventListener('click', () => {
+            checkboxes.forEach(box => box.checked = false);
             updateProgress();
-        }
+        });
     </script>
 </body>
 </html>

@@ -1,16 +1,17 @@
-/* --- THE ZEN THEME --- */
+/* --- NATURAL LIGHT THEME --- */
 :root {
-    --bg-color: #1a1c1a;     /* Deep Charcoal/Green */
-    --accent: #8fb339;       /* Natural Leaf Green */
-    --text: #e8ede7;
-    --card-bg: #242b24;
-    --border: rgba(255, 255, 255, 0.1);
+    --bg-color: #f9f7f2;      /* Soft Paper Cream */
+    --card-bg: #ffffff;
+    --text-main: #3d403d;     /* Deep Grey */
+    --accent: #7a9e7e;        /* Calm Sage Green */
+    --progress-bg: #e0e0e0;
+    --border: #e8e6e1;
 }
 
 body {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     background-color: var(--bg-color);
-    color: var(--text);
+    color: var(--text-main);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -18,70 +19,121 @@ body {
     margin: 0;
 }
 
-.container {
+.habit-container {
     background: var(--card-bg);
-    padding: 40px;
-    border-radius: 24px;
-    width: 100%;
+    width: 90%;
     max-width: 400px;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
     border: 1px solid var(--border);
-    text-align: center;
 }
 
-header h1 { margin: 0; font-weight: 700; color: var(--accent); }
-header p { color: #889288; font-size: 0.9rem; margin-bottom: 30px; }
+header h1 {
+    margin: 0;
+    font-size: 1.8rem;
+    font-weight: 700;
+}
 
-/* PROGRESS BAR */
-.progress-container {
-    background: #151a15;
-    height: 10px;
-    border-radius: 5px;
+header p {
+    color: #999;
+    margin: 5px 0 25px 0;
+    font-size: 0.9rem;
+}
+
+/* --- PROGRESS BAR --- */
+.progress-wrapper {
+    background: var(--progress-bg);
+    height: 8px;
+    border-radius: 10px;
     overflow: hidden;
     margin-bottom: 10px;
 }
-.progress-bar {
+
+.progress-fill {
     background: var(--accent);
     height: 100%;
     width: 0%;
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 0 10px var(--accent);
+    transition: width 0.4s ease-out;
 }
-.status-text { font-size: 0.8rem; margin-bottom: 30px; color: #889288; }
 
-/* HABIT ITEMS */
-.habit-list { text-align: left; margin-bottom: 30px; }
+.percentage-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 30px;
+}
+
+/* --- HABIT LIST --- */
+.habit-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
 .habit-item {
     display: flex;
     align-items: center;
-    padding: 15px;
-    background: rgba(255,255,255,0.03);
+    padding: 12px 15px;
     border-radius: 12px;
-    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    cursor: pointer;
     transition: 0.2s;
+    position: relative;
 }
-.habit-item:hover { background: rgba(255,255,255,0.06); }
 
-input[type="checkbox"] {
-    accent-color: var(--accent);
-    width: 20px;
-    height: 20px;
-    margin-right: 15px;
+.habit-item:hover {
+    background-color: #fafafa;
+    border-color: var(--accent);
+}
+
+/* Hide default checkbox */
+.habit-checkbox {
+    position: absolute;
+    opacity: 0;
     cursor: pointer;
 }
 
-label { font-size: 1rem; cursor: pointer; }
+/* Custom Checkbox UI */
+.custom-check {
+    height: 20px;
+    width: 20px;
+    background-color: #eee;
+    border-radius: 6px;
+    margin-right: 15px;
+    transition: 0.2s;
+    display: inline-block;
+}
 
-/* RESET BUTTON */
-.reset-btn {
+.habit-checkbox:checked ~ .custom-check {
+    background-color: var(--accent);
+}
+
+.habit-text {
+    font-size: 1rem;
+    font-weight: 500;
+}
+
+.habit-checkbox:checked ~ .habit-text {
+    text-decoration: line-through;
+    color: #bbb;
+}
+
+/* --- RESET BUTTON --- */
+.clear-btn {
+    width: 100%;
+    margin-top: 30px;
     background: transparent;
-    color: #889288;
     border: 1px solid var(--border);
-    padding: 10px 20px;
-    border-radius: 8px;
+    color: #bbb;
+    padding: 10px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 0.8rem;
+    transition: 0.2s;
 }
-.reset-btn:hover { color: white; border-color: var(--accent); }
 
-footer { position: absolute; bottom: 20px; font-size: 0.7rem; opacity: 0.5; }
+.clear-btn:hover {
+    color: var(--text-main);
+    border-color: var(--text-main);
+}
