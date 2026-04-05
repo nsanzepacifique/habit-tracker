@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zen Habits | Daily Tracker</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Zen Habits</h1>
+            <p>Stay consistent. Stay focused.</p>
+            
+            <!-- FEATURE 1: Working Progress Bar -->
+            <div class="progress-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p class="status-text">Daily Progress: <span id="percent">0%</span></p>
+        </header>
+
+        <main class="habit-list">
+            <!-- Habit 1 -->
+            <div class="habit-item">
+                <input type="checkbox" class="habit-check" onclick="updateProgress()">
+                <label>Code for 1 Hour</label>
+            </div>
+
+            <!-- Habit 2 -->
+            <div class="habit-item">
+                <input type="checkbox" class="habit-check" onclick="updateProgress()">
+                <label>Read 20 Pages</label>
+            </div>
+
+            <!-- Habit 3 -->
+            <div class="habit-item">
+                <input type="checkbox" class="habit-check" onclick="updateProgress()">
+                <label>Drink 2L Water</label>
+            </div>
+
+            <!-- Habit 4 -->
+            <div class="habit-item">
+                <input type="checkbox" class="habit-check" onclick="updateProgress()">
+                <label>Daily Workout</label>
+            </div>
+
+            <!-- Habit 5 -->
+            <div class="habit-item">
+                <input type="checkbox" class="habit-check" onclick="updateProgress()">
+                <label>Meditate / No Screen Time</label>
+            </div>
+        </main>
+
+        <!-- FEATURE 2: Reset Button -->
+        <button class="reset-btn" onclick="resetHabits()">Reset for Tomorrow</button>
+    </div>
+
+    <footer>
+        <p>Built with intention • 2024</p>
+    </footer>
+
+    <script>
+        function updateProgress() {
+            let checkboxes = document.querySelectorAll('.habit-check');
+            let checked = document.querySelectorAll('.habit-check:checked');
+            let percentage = (checked.length / checkboxes.length) * 100;
+            
+            document.getElementById('progressBar').style.width = percentage + "%";
+            document.getElementById('percent').innerText = Math.round(percentage) + "%";
+        }
+
+        function resetHabits() {
+            let checkboxes = document.querySelectorAll('.habit-check');
+            checkboxes.forEach(cb => cb.checked = false);
+            updateProgress();
+        }
+    </script>
+</body>
+</html>
