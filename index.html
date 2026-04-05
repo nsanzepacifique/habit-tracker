@@ -3,63 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Habits | Natural Tracker</title>
+    <title>The Daily Dashboard</title>
+    <!-- Importing Elegant Serif Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <div class="habit-container">
-        <header>
-            <h1>Daily Habits</h1>
-            <p>One step at a time.</p>
-            
-            <div class="progress-wrapper">
-                <div class="progress-fill" id="progressFill"></div>
+    <!-- FEATURE: Header & Taskbar -->
+    <nav class="main-header">
+        <div class="nav-brand">DAILY DASHBOARD</div>
+        <div id="live-clock" class="clock">00:00:00</div>
+    </nav>
+
+    <div class="content-wrapper">
+        <div class="habit-container">
+            <header>
+                <h1 id="greeting">Good Day.</h1>
+                <!-- FEATURE: Quote Generator -->
+                <p id="quote-display" class="quote">"The secret of getting ahead is getting started."</p>
+                
+                <div class="progress-wrapper">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div class="percentage-label"><span id="percentNum">0</span>% Complete</div>
+                <div id="success-msg" class="success-hidden">✨ All tasks finished! ✨</div>
+            </header>
+
+            <div class="habit-list">
+                <label class="habit-item">
+                    <input type="checkbox" class="habit-checkbox">
+                    <span class="custom-check"></span>
+                    <span class="habit-text">Ship a GitHub Commit</span>
+                </label>
+
+                <label class="habit-item">
+                    <input type="checkbox" class="habit-checkbox">
+                    <span class="custom-check"></span>
+                    <span class="habit-text">Deep Work Session (1hr)</span>
+                </label>
+
+                <label class="habit-item">
+                    <input type="checkbox" class="habit-checkbox">
+                    <span class="custom-check"></span>
+                    <span class="habit-text">Read Tech Documentation</span>
+                </label>
+
+                <label class="habit-item">
+                    <input type="checkbox" class="habit-checkbox">
+                    <span class="custom-check"></span>
+                    <span class="habit-text">Drink 2L of Water</span>
+                </label>
             </div>
-            <div class="percentage-label"><span id="percentNum">0</span>% Complete</div>
-        </header>
 
-        <div class="habit-list">
-            <label class="habit-item">
-                <input type="checkbox" class="habit-checkbox">
-                <span class="custom-check"></span>
-                <span class="habit-text">Ship a GitHub Commit</span>
-            </label>
-
-            <label class="habit-item">
-                <input type="checkbox" class="habit-checkbox">
-                <span class="custom-check"></span>
-                <span class="habit-text">Deep Work Session (1hr)</span>
-            </label>
-
-            <label class="habit-item">
-                <input type="checkbox" class="habit-checkbox">
-                <span class="custom-check"></span>
-                <span class="habit-text">Read Tech Documentation</span>
-            </label>
-
-            <label class="habit-item">
-                <input type="checkbox" class="habit-checkbox">
-                <span class="custom-check"></span>
-                <span class="habit-text">Drink 2L of Water</span>
-            </label>
-
-            <label class="habit-item">
-                <input type="checkbox" class="habit-checkbox">
-                <span class="custom-check"></span>
-                <span class="habit-text">Offline / Meditation</span>
-            </label>
+            <button class="clear-btn" id="resetBtn">Reset Archive</button>
         </div>
-
-        <button class="clear-btn" id="resetBtn">Reset List</button>
     </div>
+
+    <!-- FEATURE: Footer -->
+    <footer>
+        <p>&copy; 2024 Personal Archive • Built with Passion</p>
+    </footer>
 
     <script>
         const checkboxes = document.querySelectorAll('.habit-checkbox');
         const progressFill = document.getElementById('progressFill');
         const percentNum = document.getElementById('percentNum');
-        const resetBtn = document.getElementById('resetBtn');
+        const successMsg = document.getElementById('success-msg');
 
+        // CLOCK FEATURE
+        function updateClock() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('live-clock').innerText = timeString;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // QUOTE FEATURE
+        const quotes = [
+            "\"Focus on being productive instead of busy.\"",
+            "\"Small steps lead to big results.\"",
+            "\"Simplicity is the ultimate sophistication.\"",
+            "\"Done is better than perfect.\""
+        ];
+        document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+
+        // PROGRESS & SUCCESS LOGIC
         function updateProgress() {
             const total = checkboxes.length;
             const checked = document.querySelectorAll('.habit-checkbox:checked').length;
@@ -67,15 +97,18 @@
             
             progressFill.style.width = percentage + "%";
             percentNum.innerText = percentage;
+
+            if (percentage === 100) {
+                successMsg.classList.add('success-visible');
+                progressFill.style.boxShadow = "0 0 15px #7a9e7e";
+            } else {
+                successMsg.classList.remove('success-visible');
+                progressFill.style.boxShadow = "none";
+            }
         }
 
-        // Add event listeners to all checkboxes
-        checkboxes.forEach(box => {
-            box.addEventListener('change', updateProgress);
-        });
-
-        // Reset functionality
-        resetBtn.addEventListener('click', () => {
+        checkboxes.forEach(box => box.addEventListener('change', updateProgress));
+        document.getElementById('resetBtn').addEventListener('click', () => {
             checkboxes.forEach(box => box.checked = false);
             updateProgress();
         });

@@ -1,139 +1,136 @@
-/* --- NATURAL LIGHT THEME --- */
 :root {
-    --bg-color: #f9f7f2;      /* Soft Paper Cream */
-    --card-bg: #ffffff;
-    --text-main: #3d403d;     /* Deep Grey */
-    --accent: #7a9e7e;        /* Calm Sage Green */
-    --progress-bg: #e0e0e0;
-    --border: #e8e6e1;
+    --bg-overlay: rgba(249, 247, 242, 0.92); /* Creamy overlay */
+    --accent: #7a9e7e; /* Sage Green */
+    --text-main: #2c2e2c;
+    --border: rgba(0,0,0,0.08);
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-color);
+    margin: 0;
+    /* FEATURE: Background Image (Ensure image.png is in your folder!) */
+    background-image: url('image.png');
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    background-color: #f9f7f2; /* Fallback color */
     color: var(--text-main);
+    font-family: 'Inter', sans-serif;
+}
+
+/* FEATURE: Sticky Header */
+.main-header {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
-    margin: 0;
+    padding: 15px 40px;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.habit-container {
-    background: var(--card-bg);
-    width: 90%;
-    max-width: 400px;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.03);
-    border: 1px solid var(--border);
-}
-
-header h1 {
-    margin: 0;
-    font-size: 1.8rem;
+.nav-brand {
+    font-family: 'Playfair Display', serif;
     font-weight: 700;
+    letter-spacing: 1px;
 }
 
-header p {
-    color: #999;
-    margin: 5px 0 25px 0;
+.clock {
+    font-family: monospace;
+    background: #f4f4f4;
+    padding: 5px 12px;
+    border-radius: 6px;
     font-size: 0.9rem;
 }
 
-/* --- PROGRESS BAR --- */
-.progress-wrapper {
-    background: var(--progress-bg);
-    height: 8px;
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 10px;
+/* CONTENT CONTAINER */
+.content-wrapper {
+    min-height: 80vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: var(--bg-overlay); /* Makes text readable over the image */
 }
 
+.habit-container {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    padding: 50px;
+    border-radius: 2px; /* Square/Minimalist look */
+    box-shadow: 0 20px 60px rgba(0,0,0,0.05);
+    text-align: center;
+}
+
+h1 {
+    font-family: 'Playfair Display', serif; /* Essential Font */
+    font-size: 2.5rem;
+    margin: 0;
+}
+
+.quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: #888;
+    margin: 15px 0 30px 0;
+}
+
+/* PROGRESS BAR */
+.progress-wrapper {
+    background: #eee;
+    height: 4px;
+    margin-bottom: 10px;
+}
 .progress-fill {
     background: var(--accent);
     height: 100%;
     width: 0%;
-    transition: width 0.4s ease-out;
+    transition: 0.5s ease;
 }
+.percentage-label { font-size: 0.7rem; font-weight: bold; letter-spacing: 1px; margin-bottom: 30px;}
 
-.percentage-label {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 30px;
-}
+/* SUCCESS MSG */
+.success-hidden { opacity: 0; transition: 0.5s; font-size: 0.9rem; color: var(--accent); font-weight: bold; height: 0;}
+.success-visible { opacity: 1; height: auto; margin-bottom: 20px; transform: translateY(-5px); }
 
-/* --- HABIT LIST --- */
-.habit-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
+/* HABIT LIST */
+.habit-list { text-align: left; }
 .habit-item {
     display: flex;
     align-items: center;
-    padding: 12px 15px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    cursor: pointer;
-    transition: 0.2s;
-    position: relative;
-}
-
-.habit-item:hover {
-    background-color: #fafafa;
-    border-color: var(--accent);
-}
-
-/* Hide default checkbox */
-.habit-checkbox {
-    position: absolute;
-    opacity: 0;
+    padding: 15px 0;
+    border-bottom: 1px solid #f0f0f0;
     cursor: pointer;
 }
 
-/* Custom Checkbox UI */
 .custom-check {
-    height: 20px;
-    width: 20px;
-    background-color: #eee;
-    border-radius: 6px;
+    height: 16px; width: 16px;
+    border: 1px solid #ccc;
     margin-right: 15px;
     transition: 0.2s;
-    display: inline-block;
 }
+.habit-checkbox { display: none; }
+.habit-checkbox:checked + .custom-check { background: var(--accent); border-color: var(--accent); }
+.habit-checkbox:checked ~ .habit-text { color: #ccc; text-decoration: line-through; }
 
-.habit-checkbox:checked ~ .custom-check {
-    background-color: var(--accent);
-}
-
-.habit-text {
-    font-size: 1rem;
-    font-weight: 500;
-}
-
-.habit-checkbox:checked ~ .habit-text {
-    text-decoration: line-through;
-    color: #bbb;
-}
-
-/* --- RESET BUTTON --- */
-.clear-btn {
-    width: 100%;
-    margin-top: 30px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: #bbb;
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
+/* FOOTER */
+footer {
+    text-align: center;
+    padding: 40px;
+    background: white;
     font-size: 0.8rem;
-    transition: 0.2s;
+    color: #999;
 }
 
-.clear-btn:hover {
-    color: var(--text-main);
-    border-color: var(--text-main);
+.clear-btn {
+    margin-top: 30px;
+    background: none;
+    border: 1px solid #eee;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: inherit;
+    color: #aaa;
 }
+.clear-btn:hover { border-color: var(--text-main); color: var(--text-main); }
