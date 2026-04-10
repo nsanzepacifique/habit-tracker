@@ -1,117 +1,99 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Daily Dashboard</title>
-    <!-- Importing Elegant Serif Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;600&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <!-- FEATURE: Header & Taskbar -->
-    <nav class="main-header">
-        <div class="nav-brand">DAILY DASHBOARD</div>
-        <div id="live-clock" class="clock">00:00:00</div>
-    </nav>
+<nav class="navbar">
 
-    <div class="content-wrapper">
-        <div class="habit-container">
-            <header>
-                <h1 id="greeting">Good Day.</h1>
-                <!-- FEATURE: Quote Generator -->
-                <p id="quote-display" class="quote">"The secret of getting ahead is getting started."</p>
-                
-                <div class="progress-wrapper">
-                    <div class="progress-fill" id="progressFill"></div>
-                </div>
-                <div class="percentage-label"><span id="percentNum">0</span>% Complete</div>
-                <div id="success-msg" class="success-hidden">✨ All tasks finished! ✨</div>
-            </header>
-
-            <div class="habit-list">
-                <label class="habit-item">
-                    <input type="checkbox" class="habit-checkbox">
-                    <span class="custom-check"></span>
-                    <span class="habit-text">Ship a GitHub Commit</span>
-                </label>
-
-                <label class="habit-item">
-                    <input type="checkbox" class="habit-checkbox">
-                    <span class="custom-check"></span>
-                    <span class="habit-text">Deep Work Session (1hr)</span>
-                </label>
-
-                <label class="habit-item">
-                    <input type="checkbox" class="habit-checkbox">
-                    <span class="custom-check"></span>
-                    <span class="habit-text">Read Tech Documentation</span>
-                </label>
-
-                <label class="habit-item">
-                    <input type="checkbox" class="habit-checkbox">
-                    <span class="custom-check"></span>
-                    <span class="habit-text">Drink 2L of Water</span>
-                </label>
-            </div>
-
-            <button class="clear-btn" id="resetBtn">Reset Archive</button>
-        </div>
+    <div class="left">
+        <div class="title">Daily Dashboard</div>
+        <div class="sub">Stay consistent</div>
     </div>
 
-    <!-- FEATURE: Footer -->
-    <footer>
-        <p>&copy; 2024 Personal Archive • Built with Passion</p>
-    </footer>
+    <div class="right">
+        <button onclick="show('today')">Today</button>
+        <button onclick="show('stats')">Stats</button>
+        <button onclick="show('settings')">Settings</button>
+        <div id="clock"></div>
+    </div>
 
-    <script>
-        const checkboxes = document.querySelectorAll('.habit-checkbox');
-        const progressFill = document.getElementById('progressFill');
-        const percentNum = document.getElementById('percentNum');
-        const successMsg = document.getElementById('success-msg');
+</nav>
 
-        // CLOCK FEATURE
-        function updateClock() {
-            const now = new Date();
-            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            document.getElementById('live-clock').innerText = timeString;
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
+<div class="container">
 
-        // QUOTE FEATURE
-        const quotes = [
-            "\"Focus on being productive instead of busy.\"",
-            "\"Small steps lead to big results.\"",
-            "\"Simplicity is the ultimate sophistication.\"",
-            "\"Done is better than perfect.\""
-        ];
-        document.getElementById('quote-display').innerText = quotes[Math.floor(Math.random() * quotes.length)];
+<section id="today" class="section active">
+    <div class="card">
+        <h1>Today</h1>
 
-        // PROGRESS & SUCCESS LOGIC
-        function updateProgress() {
-            const total = checkboxes.length;
-            const checked = document.querySelectorAll('.habit-checkbox:checked').length;
-            const percentage = Math.round((checked / total) * 100);
-            
-            progressFill.style.width = percentage + "%";
-            percentNum.innerText = percentage;
+        <div class="bar">
+            <div id="fill"></div>
+        </div>
 
-            if (percentage === 100) {
-                successMsg.classList.add('success-visible');
-                progressFill.style.boxShadow = "0 0 15px #7a9e7e";
-            } else {
-                successMsg.classList.remove('success-visible');
-                progressFill.style.boxShadow = "none";
-            }
-        }
+        <p><span id="percent">0</span>% Complete</p>
 
-        checkboxes.forEach(box => box.addEventListener('change', updateProgress));
-        document.getElementById('resetBtn').addEventListener('click', () => {
-            checkboxes.forEach(box => box.checked = false);
-            updateProgress();
-        });
-    </script>
+        <label><input type="checkbox" onchange="update()"> Code</label>
+        <label><input type="checkbox" onchange="update()"> Study</label>
+        <label><input type="checkbox" onchange="update()"> Workout</label>
+        <label><input type="checkbox" onchange="update()"> Read</label>
+
+        <button onclick="resetAll()">Reset</button>
+    </div>
+</section>
+
+<section id="stats" class="section">
+    <div class="card">
+        <h1>Stats</h1>
+        <p>Completed:</p>
+        <h2 id="count">0</h2>
+    </div>
+</section>
+
+<section id="settings" class="section">
+    <div class="card">
+        <h1>Settings</h1>
+        <p>Coming soon</p>
+    </div>
+</section>
+
+</div>
+
+<script>
+setInterval(() => {
+    document.getElementById("clock").innerText =
+    new Date().toLocaleTimeString();
+}, 1000);
+
+function show(id){
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+function update(){
+    const boxes = document.querySelectorAll("input[type=checkbox]");
+    const checked = document.querySelectorAll("input[type=checkbox]:checked").length;
+
+    const percent = Math.round((checked / boxes.length) * 100);
+
+    document.getElementById("percent").innerText = percent;
+    document.getElementById("fill").style.width = percent + "%";
+    document.getElementById("count").innerText = checked;
+}
+
+function resetAll(){
+    document.querySelectorAll("input[type=checkbox]").forEach(b => b.checked = false);
+    update();
+}
+</script>
+
 </body>
 </html>
